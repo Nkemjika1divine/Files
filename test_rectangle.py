@@ -11,6 +11,10 @@ class TestForRectangle(unittest.TestCase):
         """checks if Rectangle is an instance of Base"""
         self.assertIsInstance(Rectangle(2, 3), Base)
     
+    def test_if_rectangle_is_Rectangle(self):
+        """checks if Rectangle object is an instance of Rectangle"""
+        self.assertIsInstance(Rectangle(2, 3), Rectangle)
+
     def test_rectangle_for_args(self):
         """If rectangle has no args"""
         with self.assertRaises(TypeError):
@@ -393,6 +397,122 @@ class TestForRectangle(unittest.TestCase):
         r = Rectangle(19, 3, 4, 3, 4)
         with self.assertRaises(TypeError):
             r.to_dictionary(1)
+    
+    def test_rectangle_update_no_args(self):
+        """check update method with no arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update()
+        self.assertEqual("[Rectangle] (1) 1/1 - 1/1", str(r))
+
+    def test_rectangle_update_one_args(self):
+        """check update method with one arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(8)
+        self.assertEqual("[Rectangle] (8) 1/1 - 1/1", str(r))
+
+    def test_rectangle_update_two_args(self):
+        """check update method with two arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(8, 2)
+        self.assertEqual("[Rectangle] (8) 1/1 - 2/1", str(r))
+
+    def test_rectangle_update_three_args(self):
+        """check update method with three arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(8, 2, 3)
+        self.assertEqual("[Rectangle] (8) 1/1 - 2/3", str(r))
+
+    def test_rectangle_update_four_args(self):
+        """check update method with four arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(8, 2, 3, 77)
+        self.assertEqual("[Rectangle] (8) 77/1 - 2/3", str(r))
+
+    def test_rectangle_update_five_args(self):
+        """check update method with five arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(8, 2, 3, 77, 10)
+        self.assertEqual("[Rectangle] (8) 77/10 - 2/3", str(r))
+
+    def test_rectangle_update_more_five_args(self):
+        """check update method with more than five arg"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(8, 2, 3, 77, 10, 6)
+        self.assertEqual("[Rectangle] (8) 77/10 - 2/3", str(r))
+
+    def test_rectangle_update_args_None_id(self):
+        """passing none to id via update method"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(None)
+        output = "[Rectangle] ({}) 1/1 - 1/1".format(r.id)
+        self.assertEqual(output, str(r))
+
+    def test_rectangle_update_args_None_and_more(self):
+        """test update with None id and more args"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        r.update(None, 4, 5, 2)
+        output = "[Rectangle] ({}) 2/1 - 4/5".format(r.id)
+        self.assertEqual(output, str(r))
+
+    def test_rectangle_update_args_str_width_(self):
+        """update width with str"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(TypeError, "width must be an integer"):
+            r.update(8, "i")
+
+    def test_rectangle_update_args_width_zero(self):
+        """test for updating width with 0"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+            r.update(9, 0)
+
+    def test_rectangle_update_args_width_negative(self):
+        """test for updating args with -ve value"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+            r.update(9, -7)
+
+    def test_rectangle_update_args_str_height(self):
+        """update height with str"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(TypeError, "height must be an integer"):
+            r.update(8, 42, "i")
+
+    def test_rectangle_update_args_height_zero(self):
+        """pass 0 to height via uodate method"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(ValueError, "height must be > 0"):
+            r.update(9, 1, 0)
+
+    def test_rectangle_update_args_height_negative(self):
+        """pass negative value to height via update method"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(ValueError, "height must be > 0"):
+            r.update(9, 1, -5)
+
+    def test_rectangle_update_args_str(self):
+        """test for str bring passed to x via uodate method"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(TypeError, "x must be an integer"):
+            r.update(89, 2, 3, "invalid")
+
+    def test_rectangle_update_args_x_negative(self):
+        """update x wirh negative value"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(ValueError, "x must be >= 0"):
+            r.update(89, 1, 2, -6)
+
+    def test_rectangle_update_args_y_str(self):
+        """Update y with str"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(TypeError, "y must be an integer"):
+            r.update(89, 2, 3, 4, "invalid")
+
+    def test_rectangle_update_args_y_negative(self):
+        """uodate y with negative value"""
+        r = Rectangle(1, 1, 1, 1, 1)
+        with self.assertRaisesRegex(ValueError, "y must be >= 0"):
+            r.update(89, 1, 2, 3, -6)
 
 if __name__ == '__main__':
     unittest.main()
