@@ -337,26 +337,31 @@ class TestForRectangle(unittest.TestCase):
     
     
     def test_rectangle_str_method_print_width_height(self):
+        """testing for str method with 2 args"""
         r = Rectangle(4, 6)
         capture = TestRectangle_stdout.capture_stdout(r, "print")
         correct = "[Rectangle] ({}) 0/0 - 4/6\n".format(r.id)
         self.assertEqual(correct, capture.getvalue())
 
     def test_rectangle_str_method_width_height_x(self):
+        """testing for 3 args to str method"""
         r = Rectangle(5, 5, 1)
-        correct = "[Rectangle] ({}) 1/0 - 5/5".format(r.id)
-        self.assertEqual(correct, r.__str__())
+        update = "[Rectangle] ({}) 1/0 - 5/5".format(r.id)
+        self.assertEqual(update, r.__str__())
 
     def test_rectangle_str_method_width_height_x_y(self):
+        """testing for 4 args to str method"""
         r = Rectangle(1, 8, 2, 4)
-        correct = "[Rectangle] ({}) 2/4 - 1/8".format(r.id)
-        self.assertEqual(correct, str(r))
+        output = "[Rectangle] ({}) 2/4 - 1/8".format(r.id)
+        self.assertEqual(output, str(r))
 
     def test_rectangle_str_method_width_height_x_y_id(self):
+        """testing for all args to str method"""
         r = Rectangle(13, 21, 2, 4, 7)
         self.assertEqual("[Rectangle] (7) 2/4 - 13/21", str(r))
 
     def test_rectangle_str_method_changed_attributes(self):
+        """testing str method output"""
         r = Rectangle(7, 7, 0, 0, [4])
         r.width = 15
         r.height = 1
@@ -365,9 +370,29 @@ class TestForRectangle(unittest.TestCase):
         self.assertEqual("[Rectangle] ([4]) 8/10 - 15/1", str(r))
 
     def test_rectangle_str_method_one_arg(self):
+        """testing for an arg"""
         r = Rectangle(1, 2, 3, 4, 5)
         with self.assertRaises(TypeError):
             r.__str__(1)
+
+    def test_rectangle_to_dictionary_output(self):
+        """testing for dictionary output"""
+        r = Rectangle(89, 7, 1, 2, 6)
+        output = {'x': 1, 'y': 2, 'id': 6, 'height': 7, 'width': 89}
+        self.assertDictEqual(r.to_dictionary(), output)
     
+    def test_rectangle_update_copy_args(self):
+        """test if two objects are the same if copied"""
+        r1 = Rectangle(1, 2, 6, 9, 5)
+        r2 = Rectangle(8, 8 1, 20, 30)
+        r2.update(**r1.to_dictionary())
+        self.assertNotEqual(r1, r2)
+
+    def test_to_dictionary_arg(self):
+        """passing arg to the method"""
+        r = Rectangle(19, 3, 4, 3, 4)
+        with self.assertRaises(TypeError):
+            r.to_dictionary(1)
+
 if __name__ == '__main__':
     unittest.main()
