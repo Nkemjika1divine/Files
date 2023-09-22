@@ -6,7 +6,7 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *head, *sorted, *unsorted;
+	listint_t *head, *unsorted, *hole;
 	int holder;
 
 	if (list == NULL)
@@ -17,17 +17,16 @@ void insertion_sort_list(listint_t **list)
 
 	head = *list;
 	unsorted = (*list)->next;
-	sorted = *list;
 	while (unsorted->next != NULL)
 	{
 		holder = unsorted->n;
-		while (sorted->prev != NULL && sorted->n > holder)
+		hole = unsorted;
+		while (hole->prev != NULL && hole->prev->n > holder)
 		{
-			unsorted->n = sorted->n;
-			sorted = sorted->prev;
+			hole->n = hole->prev->n;
+			hole = hole->prev;
 		}
-		sorted->n = holder;
-		sorted = unsorted->next;
+		hole->n = holder;
 		unsorted = unsorted->next;
 	}
 	(*list) = head;
